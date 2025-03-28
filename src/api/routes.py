@@ -12,8 +12,24 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+@api.route('/login', methods=['POST'])
+def login():
+    email = request.json.get("email")
+    password = request.json.get("password")
+    if None in [email, password]:
+        return jsonify ({
+            "msg": "one or more required fields are missing"
+        }), 400
+    user = User.query.filter_by(email = email).first()
+    if user is None: 
+         return jsonify ({
+            "msg": "user with that email does not exist"
+        }), 404
+    if user.password != password:
+        return jsonify ({
+            "msg": "incorrect password"
+        }), 401
+    
 
     response_body = {
         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
