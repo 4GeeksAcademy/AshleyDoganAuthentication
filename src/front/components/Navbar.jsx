@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
-	const { actions } = useContext(Context);
+	
 
 	const handleLogout = () => {
 		actions.logout();

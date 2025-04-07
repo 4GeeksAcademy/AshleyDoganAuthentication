@@ -1,5 +1,7 @@
-export const initialStore=()=>{
-  return{
+// require('dotenv').config();
+
+export const initialStore = () => {
+  return {
     message: null,
     todos: [
       {
@@ -11,53 +13,59 @@ export const initialStore=()=>{
         id: 2,
         title: "Do my homework",
         background: null,
-      }
-    ]
-  }
-}
+      },
+    ],
+  };
+};
 
 export default function storeReducer(store, action = {}) {
-  switch(action.type){
-    case 'set_hello':
+  switch (action.type) {
+    case "set_hello":
       return {
         ...store,
-        message: action.payload
+        message: action.payload,
       };
-      
-    case 'add_task':
 
-      const { id,  color } = action.payload
+    case "add_task":
+      const { id, color } = action.payload;
 
       return {
         ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        todos: store.todos.map((todo) =>
+          todo.id === id ? { ...todo, background: color } : todo
+        ),
       };
-    
-    case 'handleLogin':
-      const { email,  password } = action.payload
+
+    case "handleLogin":
+      const { email, password } = action.payload;
 
       const login = async () => {
-        let response = await fetch(process.env.VITE_BACKEND_URL + "/api/login", { 
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ email: email, password: password })
+        let response = await fetch(
+          process.env.VITE_BACKEND_URL + "/api/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, password: password }),
+          }
+        );
 
-        })
-
-        if(response.status!=200) {
-          console.log("there was an error while attempting to login:", response.status, response.statusText)
-          return false
+        if (response.status != 200) {
+          console.log(
+            "there was an error while attempting to login:",
+            response.status,
+            response.statusText
+          );
+          return false;
         }
-        let data = await response.json()
-        console.log(data)
-        sessionStorage.setItem("token", data.token)
-      }
+        let data = await response.json();
+        console.log(data);
+        sessionStorage.setItem("token", data.token);
+        return true;
+      };
 
-      login()
-      
-
+      login();
 
     default:
-      throw Error('Unknown action.');
-  }    
+      throw Error("Unknown action.");
+  }
 }

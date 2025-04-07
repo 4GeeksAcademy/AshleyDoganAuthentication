@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import "../../styles/home.css";
+
 
 
 export const SignUp = () => {
-    const {store, dispatch} =useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const token = sessionStorage.getItem("token");
@@ -27,7 +27,7 @@ export const SignUp = () => {
     };
 
     useEffect(() => {
-        if (store.token && store.token !== "" && !== undefined) {
+        if (store.token && store.token !== "" && token !== undefined) {
             navigate("/");
         }
     }, [store.token, navigate]);
