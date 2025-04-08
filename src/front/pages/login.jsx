@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -12,16 +12,33 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        let result = await dispatch({ type: "handleLogin", payload: { email: email, password: password } });
-        if (!result) {
-            alert("there was an error logging in")
-        } else {
+        try {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            }
+            );
+
+            if (!response.ok) {
+                console.log(
+                    "there was an error while attempting to login:",
+                    response.status,
+                    response.statusText
+                );
+                return;
+            }
+            const data = await response.json();
+            // console.log(data);
+            sessionStorage.setItem("token", data.token);
             setEmail("");
             setPassword("");
             navigate("/")
-        }
-
-    };
+        } catch (error) {
+            console.error("problem logging in", error);
+            alert("cannot login")
+        };
+    }
 
     const handleLogout = () => {
         dispatch({ type: "logout" })
