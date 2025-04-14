@@ -11,7 +11,8 @@ export const Login = () => {
     const token = sessionStorage.getItem("token");
     const navigate = useNavigate();
 
-    const handleClick = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
             const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
                 method: "POST",
@@ -67,7 +68,7 @@ export const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button onClick={handleClick}>Login</button>
+                <button onClick={handleLogin}>Login</button>
                 <button onClick={handleLogout}>Logout</button>
             </div>
         </div>

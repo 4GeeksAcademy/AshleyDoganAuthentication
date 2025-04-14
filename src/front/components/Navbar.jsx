@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-	
+	const navigate = useNavigate
 
 	const handleLogout = () => {
-		actions.logout();
+		sessionStorage.removeItem("token");
+		navigate("/login")
 	};
 
 	return (
@@ -21,7 +22,6 @@ export const Navbar = () => {
 							</Link>
 							{/* Moved Register button to be shown when there's no token */}
 							<Link to="/signup">
-								{" "}
 								{/* Assuming you have a route for registration */}
 								<button className="btn btn-secondary">Sign Up</button>
 							</Link>
