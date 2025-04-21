@@ -35,6 +35,24 @@ def login():
     access_token = create_access_token(identity=user.id)
     return jsonify(token=access_token)
 
+@api.route('/signup', methods=['POST'])
+def signup():
+    email = request.json.get("email")
+    password = request.json.get("password")
+    if None in [email, password]:
+        return jsonify({
+            "msg": "one or more required fields are missing"
+        }), 400
+    existingUser = User.query.filter_by(email=email).first()
+    if existingUser:
+        return jsonify({
+            "msg": "user already exists"
+        }), 409
+    newUser = User(email=email, password=password)
+    db.session.add(newUser)
+    db.session.commit()
+    return jsonify({"msg": "user created"}), 200
+
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 

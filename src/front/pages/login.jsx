@@ -34,7 +34,8 @@ export const Login = () => {
             sessionStorage.setItem("token", data.token);
             setEmail("");
             setPassword("");
-            navigate("/")
+            navigate("/private")
+            window.location.reload()
         } catch (error) {
             console.error("problem logging in", error);
             alert("cannot login")
